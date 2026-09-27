@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For You ❤️</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= PIN SCREEN ================= -->
+
+    <section id="lockScreen" class="screen active">
+
+        <div class="lock-card">
+
+            <div class="lock-icon">🔐</div>
+
+            <h1>A little surprise...</h1>
+
+            <p>Enter the 4-digit PIN ❤️</p>
+
+            <div class="pin-dots" id="pinDots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="keypad">
+
+                <button data-key="1">1</button>
+                <button data-key="2">2</button>
+                <button data-key="3">3</button>
+
+                <button data-key="4">4</button>
+                <button data-key="5">5</button>
+                <button data-key="6">6</button>
+
+                <button data-key="7">7</button>
+                <button data-key="8">8</button>
+                <button data-key="9">9</button>
+
+                <button class="empty"></button>
+                <button data-key="0">0</button>
+                <button id="backspace">⌫</button>
+
+            </div>
+
+            <p id="error" class="error"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LOTUS SCREEN ================= -->
+
+    <section id="flowerScreen" class="screen">
+
+        <div class="flower-scene">
+
+            <p class="hint">
+                Something beautiful is waiting for you...
+            </p>
+
+
+            <div class="lotus">
+
+                <div class="petal back p1"></div>
+                <div class="petal back p2"></div>
+                <div class="petal back p3"></div>
+                <div class="petal back p4"></div>
+                <div class="petal back p5"></div>
+
+                <div class="petal side p6"></div>
+                <div class="petal side p7"></div>
+                <div class="petal side p8"></div>
+                <div class="petal side p9"></div>
+                <div class="petal side p10"></div>
+
+                <div class="petal front p11"></div>
+                <div class="petal front p12"></div>
+                <div class="petal front p13"></div>
+                <div class="petal front p14"></div>
+
+
+                <div class="center">
+
+                    <div class="letter-mini">
+                        💌
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <p id="openText" class="open-text">
+                Wait for it... 🌸
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LETTER SCREEN ================= -->
+
+    <section id="letterScreen" class="screen">
+
+        <div class="letter-wrap">
+
+            <div class="envelope">
+
+                <div class="paper">
+
+                    <div class="paper-content">
+
+                        <div class="heart">
+                            ❤️
+                        </div>
+
+
+                        <h2>
+                            I'm really sorry...
+                        </h2>
+
+
+                        <p>
+                            I'm really sorry mere aaj ke behaviour ke liye.
+                            Main bas khona nahi chahta hoon tumhe, isliye bas
+                            ye galtiyan ho rahi hain mere se.
+                        </p>
+
+
+                        <p>
+                            Aur main isko dheere dheere sudhar raha hoon.
+                            Mujhe thoda time lagega, bas tab tak mujhe jhel lo. 🥺
+                        </p>
+
+
+                        <p>
+                            Maine ye web badi mehnat se banayi hai kyuki main
+                            chahta tha kisi special way se tumhe ye baat bataun.
+                        </p>
+
+
+                        <p class="love">
+
+                            I really love you 💓
+                            <br>
+
+                            I love you so much ❤️
+
+                        </p>
+
+
+                        <p>
+
+                            I'm sorry.
+                            <br>
+
+                            Bas overreact karta hoon —
+                            thoda ya jyada —
+                            uske liye maaf karna. 🥺❤️
+
+                        </p>
+
+
+                        <div class="signature">
+
+                            Always yours ❤️
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button id="musicBtn" class="music-btn">
+
+                🎵 Play our song
+
+            </button>
+
+
+            <audio id="song" loop>
+
+                <source
+                    src="{{ url_for('static', filename='be-my-baby.mp3') }}"
+                    type="audio/mpeg">
+
+            </audio>
+
+        </div>
+
+    </section>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

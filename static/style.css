@@ -1,0 +1,786 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #35152e 0%,
+            #160b19 45%,
+            #07050c 100%
+        );
+
+    color: white;
+}
+
+
+/* ================= GENERAL SCREEN ================= */
+
+.screen {
+    min-height: 100vh;
+    width: 100%;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.screen.active {
+    display: flex;
+}
+
+
+/* ================= PIN SCREEN ================= */
+
+.lock-card {
+
+    width: min(90%, 370px);
+
+    text-align: center;
+
+    padding: 34px 25px;
+
+    border-radius: 28px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.45);
+}
+
+
+.lock-icon {
+
+    font-size: 42px;
+
+    margin-bottom: 12px;
+}
+
+
+.lock-card h1 {
+
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+
+.lock-card p {
+
+    color: #e8cddd;
+}
+
+
+/* PIN DOTS */
+
+.pin-dots {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin: 25px 0;
+}
+
+
+.pin-dots span {
+
+    width: 14px;
+
+    height: 14px;
+
+    border-radius: 50%;
+
+    border: 1px solid white;
+
+    transition: 0.2s;
+}
+
+
+.pin-dots span.filled {
+
+    background: #ff8fca;
+
+    box-shadow:
+        0 0 15px #ff8fca;
+}
+
+
+/* KEYPAD */
+
+.keypad {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 11px;
+}
+
+
+.keypad button {
+
+    height: 57px;
+
+    border: none;
+
+    border-radius: 17px;
+
+    color: white;
+
+    font-size: 21px;
+
+    background:
+        rgba(255, 255, 255, 0.11);
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+
+.keypad button:active {
+
+    transform: scale(0.92);
+
+    background:
+        rgba(255, 143, 202, 0.3);
+}
+
+
+.keypad .empty {
+
+    visibility: hidden;
+}
+
+
+/* ERROR */
+
+.error {
+
+    height: 20px;
+
+    margin-top: 12px;
+
+    color: #ff9cba !important;
+
+    font-size: 14px;
+}
+
+
+/* ================= LOTUS ================= */
+
+.flower-scene {
+
+    width: 100%;
+
+    height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+}
+
+
+.hint {
+
+    position: absolute;
+
+    top: 12%;
+
+    color: #e7c5dc;
+
+    font-size: 16px;
+
+    letter-spacing: 1px;
+
+    opacity: 0;
+
+    animation:
+        fadeIn 2s 1s forwards;
+}
+
+
+/* LOTUS */
+
+.lotus {
+
+    width: 320px;
+
+    height: 250px;
+
+    position: relative;
+
+    margin-top: 40px;
+
+    transform: scale(0.78);
+
+    animation:
+        bloom 5.5s
+        cubic-bezier(.2, .75, .2, 1)
+        forwards;
+}
+
+
+/* PETALS */
+
+.petal {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 20px;
+
+    transform-origin:
+        50% 100%;
+
+    width: 105px;
+
+    height: 190px;
+
+    border-radius:
+        70% 70% 25% 25%;
+
+    background:
+
+        radial-gradient(
+            ellipse at 50% 75%,
+            #fff6fc 0%,
+            #ffd5ec 30%,
+            #ef86bb 67%,
+            #a93f7d 100%
+        );
+
+    box-shadow:
+
+        inset 0 -10px 20px
+        rgba(115, 25, 75, 0.3),
+
+        0 8px 20px
+        rgba(255, 93, 177, 0.15);
+
+    opacity: 0;
+
+    transform:
+        translateX(-50%)
+        rotate(0deg)
+        scale(0.2);
+}
+
+
+/* PETAL ROTATIONS */
+
+.p1 {
+    --r: -42deg;
+}
+
+.p2 {
+    --r: -25deg;
+}
+
+.p3 {
+    --r: -10deg;
+}
+
+.p4 {
+    --r: 10deg;
+}
+
+.p5 {
+    --r: 28deg;
+}
+
+.p6 {
+    --r: -55deg;
+}
+
+.p7 {
+    --r: -30deg;
+}
+
+.p8 {
+    --r: 30deg;
+}
+
+.p9 {
+    --r: 55deg;
+}
+
+.p10 {
+    --r: 0deg;
+}
+
+.p11 {
+    --r: -18deg;
+}
+
+.p12 {
+    --r: 18deg;
+}
+
+.p13 {
+    --r: -6deg;
+}
+
+.p14 {
+    --r: 6deg;
+}
+
+
+/* DIFFERENT PETAL SIZES */
+
+.petal.back {
+
+    height: 205px;
+}
+
+
+.petal.side {
+
+    height: 180px;
+
+    width: 95px;
+}
+
+
+.petal.front {
+
+    height: 155px;
+
+    width: 92px;
+}
+
+
+/* OPENING ANIMATION */
+
+.lotus .p1 {
+    animation:
+        petalOpen 1.7s .2s forwards;
+}
+
+.lotus .p2 {
+    animation:
+        petalOpen 1.7s .35s forwards;
+}
+
+.lotus .p3 {
+    animation:
+        petalOpen 1.7s .5s forwards;
+}
+
+.lotus .p4 {
+    animation:
+        petalOpen 1.7s .65s forwards;
+}
+
+.lotus .p5 {
+    animation:
+        petalOpen 1.7s .8s forwards;
+}
+
+.lotus .p6 {
+    animation:
+        petalOpen 1.7s 1s forwards;
+}
+
+.lotus .p7 {
+    animation:
+        petalOpen 1.7s 1.15s forwards;
+}
+
+.lotus .p8 {
+    animation:
+        petalOpen 1.7s 1.3s forwards;
+}
+
+.lotus .p9 {
+    animation:
+        petalOpen 1.7s 1.45s forwards;
+}
+
+.lotus .p10 {
+    animation:
+        petalOpen 1.7s 1.6s forwards;
+}
+
+.lotus .p11 {
+    animation:
+        petalOpen 1.7s 1.8s forwards;
+}
+
+.lotus .p12 {
+    animation:
+        petalOpen 1.7s 1.95s forwards;
+}
+
+.lotus .p13 {
+    animation:
+        petalOpen 1.7s 2.1s forwards;
+}
+
+.lotus .p14 {
+    animation:
+        petalOpen 1.7s 2.25s forwards;
+}
+
+
+@keyframes petalOpen {
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateX(-50%)
+            rotate(var(--r))
+            scale(1);
+    }
+}
+
+
+@keyframes bloom {
+
+    0% {
+        transform: scale(0.55);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* LOTUS CENTER */
+
+.center {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 50%;
+
+    bottom: 30px;
+
+    transform:
+        translateX(-50%)
+        scale(0);
+
+    width: 95px;
+
+    height: 95px;
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            #f7b13c,
+            #d26d20 60%,
+            #7c3419
+        );
+
+    box-shadow:
+
+        0 0 35px
+        rgba(255, 178, 61, 0.55);
+
+    animation:
+        centerAppear 1.3s 3.8s forwards;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.letter-mini {
+
+    font-size: 32px;
+
+    animation:
+        pulse 1.4s infinite alternate;
+}
+
+
+@keyframes centerAppear {
+
+    to {
+
+        transform:
+            translateX(-50%)
+            scale(1);
+    }
+}
+
+
+@keyframes pulse {
+
+    to {
+
+        transform:
+            scale(1.13);
+    }
+}
+
+
+.open-text {
+
+    margin-top: 15px;
+
+    opacity: 0;
+
+    animation:
+        fadeIn 1s 4.2s forwards;
+
+    color: #ffd7ec;
+}
+
+
+@keyframes fadeIn {
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* ================= LETTER ================= */
+
+.letter-wrap {
+
+    width: min(92%, 650px);
+
+    max-height: 92vh;
+
+    display: flex;
+
+    align-items: center;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.envelope {
+
+    width: 100%;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f6e1c7,
+            #fff5e6
+        );
+
+    box-shadow:
+        0 20px 70px
+        rgba(0, 0, 0, 0.6);
+
+    animation:
+        letterIn 1.2s
+        cubic-bezier(.2, .8, .2, 1);
+}
+
+
+.paper {
+
+    background:
+
+        linear-gradient(
+            rgba(255,255,255,.9),
+            rgba(255,247,235,.95)
+        ),
+
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 30px,
+            rgba(155,105,75,.08) 31px
+        );
+
+    color: #442936;
+
+    min-height: 500px;
+
+    padding: 38px 28px;
+
+    border:
+        1px solid
+        rgba(100,50,50,.18);
+}
+
+
+.paper-content {
+
+    max-width: 560px;
+
+    margin: auto;
+
+    line-height: 1.75;
+
+    font-size: 17px;
+}
+
+
+.paper h2 {
+
+    text-align: center;
+
+    font-size: 30px;
+
+    color: #a33d6f;
+
+    margin-bottom: 25px;
+}
+
+
+.paper p {
+
+    margin-bottom: 18px;
+}
+
+
+.heart {
+
+    text-align: center;
+
+    font-size: 35px;
+
+    margin-bottom: 5px;
+}
+
+
+.love {
+
+    text-align: center;
+
+    font-weight: bold;
+
+    color: #b22f66;
+
+    font-size: 20px;
+}
+
+
+.signature {
+
+    text-align: right;
+
+    margin-top: 25px;
+
+    font-style: italic;
+
+    color: #a33d6f;
+}
+
+
+/* MUSIC BUTTON */
+
+.music-btn {
+
+    border:
+        1px solid
+        rgba(255,255,255,.3);
+
+    color: white;
+
+    background:
+        rgba(255,255,255,.12);
+
+    border-radius: 25px;
+
+    padding: 12px 22px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* LETTER ANIMATION */
+
+@keyframes letterIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(80px)
+            scale(.85)
+            rotateX(20deg);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1)
+            rotateX(0);
+    }
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 480px) {
+
+    .lotus {
+
+        transform: scale(.75);
+    }
+
+    .paper {
+
+        padding:
+            28px 20px;
+    }
+
+    .paper-content {
+
+        font-size: 16px;
+    }
+
+    .paper h2 {
+
+        font-size: 25px;
+    }
+}
