@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, jsonify
-
+import os
 app = Flask(__name__)
 
-PIN = "0607"
-
+PIN = os.getenv("PIN")
 
 @app.route("/")
 def home():
