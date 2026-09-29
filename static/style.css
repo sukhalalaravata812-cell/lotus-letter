@@ -17,7 +17,7 @@ body {
             #07050c 100%
         );
 
-    color: white;
+    color: rgb(155, 6, 6);
 }
 
 
@@ -52,7 +52,7 @@ body {
 
     border-radius: 28px;
 
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(169, 11, 11, 0.08);
 
     border: 1px solid rgba(255, 255, 255, 0.15);
 
@@ -207,7 +207,7 @@ body {
 
     position: absolute;
 
-    top: 12%;
+    top: 15%;
 
     color: #e7c5dc;
 
@@ -783,4 +783,11 @@ body {
 
         font-size: 25px;
     }
+}
+/* =========================
+   PREVIEW MODE
+   ========================= */
+
+.preview-hidden {
+    display: none !important;
 }

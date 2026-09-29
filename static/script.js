@@ -8,7 +8,9 @@ const error = document.getElementById("error");
 let pin = "";
 
 
-/* ================= PIN DOTS ================= */
+// =========================
+// UPDATE PIN DOTS
+// =========================
 
 function updateDots() {
 
@@ -25,66 +27,119 @@ function updateDots() {
 }
 
 
-/* ================= CHECK PIN ================= */
+// =========================
+// CHECK PIN
+// =========================
 
 async function checkPin() {
 
     try {
 
-        const slug = window.location.pathname.split("/")[2];
+        const slug =
+            window.location.pathname.split("/")[2];
 
         if (!slug) {
-            error.textContent = "Invalid letter link ❤️";
+
+            error.textContent =
+                "Invalid letter link ❤️";
+
             return;
         }
 
-        const response = await fetch(`/api/verify/${slug}`, {
 
-            method: "POST",
+        const response = await fetch(
+            `/api/verify/${slug}`,
+            {
+                method: "POST",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-            body: JSON.stringify({
-                pin: pin
-            })
+                body: JSON.stringify({
+                    pin: pin
+                })
+            }
+        );
 
-        });
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
 
         if (result.ok) {
 
-            // Load custom letter content
-            document.getElementById("customTitle").textContent =
-                result.title;
+            // =========================
+            // CUSTOM CONTENT
+            // =========================
 
-            document.getElementById("customMessage").textContent =
-                result.message;
+            document.getElementById(
+                "customTitle"
+            ).textContent = result.title;
 
 
-            /* PIN screen hide */
+            document.getElementById(
+                "customMessage"
+            ).textContent = result.message;
+
+
+            document.getElementById(
+                "loveLine1"
+            ).textContent =
+                result.love_line_1;
+
+
+            document.getElementById(
+                "loveLine2"
+            ).textContent =
+                result.love_line_2;
+
+
+            document.getElementById(
+                "signature"
+            ).textContent =
+                result.signature;
+
+
+            // =========================
+            // CUSTOM SONG
+            // =========================
+
+            if (result.song_url) {
+
+                const songSource =
+                    song.querySelector("source");
+
+                songSource.src =
+                    result.song_url;
+
+                song.load();
+
+            }
+
+
+            // =========================
+            // SHOW FLOWER ANIMATION
+            // =========================
 
             lockScreen.classList.remove("active");
-
-
-            /* Lotus screen show */
 
             flowerScreen.classList.add("active");
 
 
-            /*
-                Lotus animation ke baad
-                letter screen open hoga.
-            */
+            // =========================
+            // SHOW LETTER
+            // =========================
 
             setTimeout(() => {
 
-                flowerScreen.classList.remove("active");
+                flowerScreen.classList.remove(
+                    "active"
+                );
 
-                letterScreen.classList.add("active");
+                letterScreen.classList.add(
+                    "active"
+                );
 
             }, 7200);
 
@@ -100,6 +155,7 @@ async function checkPin() {
 
         }
 
+
     } catch (errorObject) {
 
         console.error(errorObject);
@@ -112,44 +168,46 @@ async function checkPin() {
 }
 
 
-/* ================= NUMBER BUTTONS ================= */
+// =========================
+// KEYPAD
+// =========================
 
 document
-    .querySelectorAll(".keypad button[data-key]")
+    .querySelectorAll(
+        ".keypad button[data-key]"
+    )
     .forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            if (pin.length >= 4) {
-                return;
-            }
+                if (pin.length >= 4) {
+                    return;
+                }
 
-            pin += button.dataset.key;
+                pin += button.dataset.key;
 
-            updateDots();
+                updateDots();
 
 
-            /*
-                4 digits complete hone par
-                automatically PIN check hoga.
-            */
+                if (pin.length === 4) {
 
-            if (pin.length === 4) {
+                    setTimeout(() => {
+                        checkPin();
+                    }, 180);
 
-                setTimeout(() => {
-
-                    checkPin();
-
-                }, 180);
+                }
 
             }
-
-        });
+        );
 
     });
 
 
-/* ================= BACKSPACE ================= */
+// =========================
+// BACKSPACE
+// =========================
 
 document
     .getElementById("backspace")
@@ -164,7 +222,9 @@ document
     });
 
 
-/* ================= MUSIC ================= */
+// =========================
+// MUSIC
+// =========================
 
 const musicButton =
     document.getElementById("musicBtn");
@@ -173,31 +233,36 @@ const song =
     document.getElementById("song");
 
 
-musicButton.addEventListener("click", async () => {
+musicButton.addEventListener(
+    "click",
+    async () => {
 
-    try {
+        try {
 
-        if (song.paused) {
+            if (song.paused) {
 
-            await song.play();
+                await song.play();
+
+                musicButton.textContent =
+                    "🎵 Pause our song";
+
+            } else {
+
+                song.pause();
+
+                musicButton.textContent =
+                    "🎵 Play our song";
+
+            }
+
+        } catch (errorObject) {
+
+            console.error(errorObject);
 
             musicButton.textContent =
-                "🎵 Pause our song";
-
-        } else {
-
-            song.pause();
-
-            musicButton.textContent =
-                "🎵 Play our song";
+                "🎵 Song could not play";
 
         }
 
-    } catch {
-
-        musicButton.textContent =
-            "Add your MP3 in static folder";
-
     }
-
-});
+);

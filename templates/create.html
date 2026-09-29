@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Your Letter</title>
+    <title>Create Your Letter 💌</title>
 
     <style>
         body {
@@ -21,7 +20,7 @@
         .box {
             background: white;
             width: 90%;
-            max-width: 500px;
+            max-width: 520px;
             padding: 25px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
@@ -50,8 +49,12 @@
         }
 
         textarea {
-            height: 150px;
+            height: 130px;
             resize: vertical;
+        }
+
+        input[type="file"] {
+            background: #fff;
         }
 
         button {
@@ -86,7 +89,10 @@
 
         #copyBtn {
             background: #6f42c1;
-            margin-top: 10px;
+        }
+
+        #previewBtn {
+            background: #198754;
         }
     </style>
 </head>
@@ -97,8 +103,7 @@
 
     <h1>💌 Create Your Letter</h1>
 
-    <label>Set Your PIN</label>
-
+    <label>Set Your PIN 🔐</label>
     <input
         type="password"
         id="pin"
@@ -107,23 +112,41 @@
         placeholder="Enter 4 digit PIN"
     >
 
-    <label>Title</label>
-
+    <label>Title ❤️</label>
     <input
         type="text"
         id="title"
         placeholder="Example: For Someone Special ❤️"
     >
 
-    <label>Your Message</label>
-
+    <label>Your Message 💌</label>
     <textarea
         id="message"
         placeholder="Write your message here..."
     ></textarea>
 
-    <label>Choose Your Song 🎵</label>
+    <label>Love Line 1 💓</label>
+    <input
+        type="text"
+        id="love_line_1"
+        value="I really love you 💓"
+    >
 
+    <label>Love Line 2 ❤️</label>
+    <input
+        type="text"
+        id="love_line_2"
+        value="you are my everything❤️"
+    >
+
+    <label>Signature ✨</label>
+    <input
+        type="text"
+        id="signature"
+        value="Always yours ❤️"
+    >
+
+    <label>Choose Your Song 🎵</label>
     <input
         type="file"
         id="songFile"
@@ -134,15 +157,22 @@
         💖 Create My Letter
     </button>
 
-
     <div id="linkBox">
 
-        <strong>🎉 Your unique letter link:</strong>
+        <strong>🎉 Your letter has been created!</strong>
+
+        <p>
+            🔗 Your unique letter link:
+        </p>
 
         <p id="letterLink"></p>
 
         <button id="copyBtn" onclick="copyLink()">
             📋 Copy Link
+        </button>
+
+        <button id="previewBtn" onclick="previewLetter()">
+            👀 Preview Your Letter
         </button>
 
     </div>
@@ -153,6 +183,7 @@
 <script>
 
 let generatedLink = "";
+let previewLink = "";
 
 
 async function createLetter() {
@@ -166,6 +197,18 @@ async function createLetter() {
     const message =
         document.getElementById("message").value.trim();
 
+    const loveLine1 =
+        document.getElementById("love_line_1").value.trim();
+
+    const loveLine2 =
+        document.getElementById("love_line_2").value.trim();
+
+    const signature =
+        document.getElementById("signature").value.trim();
+
+    const songFile =
+        document.getElementById("songFile").files[0];
+
 
     if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
 
@@ -177,10 +220,29 @@ async function createLetter() {
 
     if (!title || !message) {
 
-        alert("Please fill all fields.");
+        alert("Please fill Title and Message.");
 
         return;
     }
+
+
+    if (!songFile) {
+
+        alert("Please choose a song 🎵");
+
+        return;
+    }
+
+
+    const formData = new FormData();
+
+    formData.append("pin", pin);
+    formData.append("title", title);
+    formData.append("message", message);
+    formData.append("love_line_1", loveLine1);
+    formData.append("love_line_2", loveLine2);
+    formData.append("signature", signature);
+    formData.append("song", songFile);
 
 
     try {
@@ -189,19 +251,7 @@ async function createLetter() {
 
             method: "POST",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                pin: pin,
-
-                title: title,
-
-                message: message
-
-            })
+            body: formData
 
         });
 
@@ -214,6 +264,9 @@ async function createLetter() {
             generatedLink =
                 window.location.origin + result.url;
 
+            previewLink =
+                window.location.origin + result.preview_url;
+
 
             document.getElementById("letterLink").textContent =
                 generatedLink;
@@ -224,10 +277,6 @@ async function createLetter() {
 
 
             alert("Your letter has been created! ❤️");
-            setTimeout(() => {
-    window.location.href = generatedLink;
-}, 1000);
-
 
         } else {
 
@@ -235,8 +284,8 @@ async function createLetter() {
                 result.error ||
                 "Something went wrong."
             );
-
         }
+
 
     } catch (error) {
 
@@ -245,39 +294,44 @@ async function createLetter() {
         alert(
             "Server error. Please try again."
         );
-
     }
-
 }
 
 
 function copyLink() {
 
-    if (!generatedLink) {
-        return;
-    }
+    if (!generatedLink) return;
 
 
-    navigator.clipboard.writeText(
-        generatedLink
-    )
-    .then(() => {
+    navigator.clipboard.writeText(generatedLink)
 
-        alert("Link copied! ❤️");
+        .then(() => {
 
-    })
-    .catch(() => {
+            alert("Link copied! ❤️");
 
-        alert(
-            "Link copy nahi hua. Manually copy kar lo."
-        );
+        })
 
-    });
+        .catch(() => {
 
+            alert(
+                "Link copy nahi hua. Manually copy kar lo."
+            );
+
+        });
+}
+
+
+function previewLetter() {
+
+    if (!previewLink) return;
+
+    window.open(
+        previewLink,
+        "_blank"
+    );
 }
 
 </script>
 
 </body>
-
 </html>

@@ -14,7 +14,8 @@
 
     <!-- ================= PIN SCREEN ================= -->
 
-    <section id="lockScreen" class="screen active">
+    <section id="lockScreen"
+             class="screen {% if preview %}preview-hidden{% else %}active{% endif %}">
 
         <div class="lock-card">
 
@@ -108,7 +109,8 @@
 
     <!-- ================= LETTER SCREEN ================= -->
 
-    <section id="letterScreen" class="screen">
+    <section id="letterScreen"
+             class="screen {% if preview %}active{% endif %}">
 
         <div class="letter-wrap">
 
@@ -123,21 +125,45 @@
                         </div>
 
                         <!-- CUSTOM TITLE -->
-                        <h2 id="customTitle"></h2>
+                        <h2 id="customTitle">
+                            {% if preview %}
+                                {{ letter.title }}
+                            {% endif %}
+                        </h2>
 
                         <!-- CUSTOM MESSAGE -->
-                        <p id="customMessage"></p>
-
-
-                        <p class="love">
-                            I really love you 💓
-                            <br>
-                            I love you so much ❤️
+                        <p id="customMessage">
+                            {% if preview %}
+                                {{ letter.message }}
+                            {% endif %}
                         </p>
 
+                        <!-- CUSTOM LOVE LINES -->
+                        <p class="love">
 
-                        <div class="signature">
-                            Always yours ❤️
+                            <span id="loveLine1">
+                                {% if preview %}
+                                    {{ letter.love_line_1 }}
+                                {% endif %}
+                            </span>
+
+                            <br>
+
+                            <span id="loveLine2">
+                                {% if preview %}
+                                    {{ letter.love_line_2 }}
+                                {% endif %}
+                            </span>
+
+                        </p>
+
+                        <!-- CUSTOM SIGNATURE -->
+                        <div class="signature" id="signature">
+
+                            {% if preview %}
+                                {{ letter.signature }}
+                            {% endif %}
+
                         </div>
 
                     </div>
@@ -147,15 +173,16 @@
             </div>
 
 
+            <!-- ================= MUSIC ================= -->
+
             <button id="musicBtn" class="music-btn">
                 🎵 Play our song
             </button>
 
-
             <audio id="song" loop>
 
                 <source
-                    src="{{ url_for('static', filename='be-my-baby.mp3') }}"
+                    src="{% if preview and letter.song_url %}{{ letter.song_url }}{% else %}{{ url_for('static', filename='be-my-baby.mp3') }}{% endif %}"
                     type="audio/mpeg">
 
             </audio>
