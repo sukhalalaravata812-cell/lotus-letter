@@ -47,7 +47,11 @@ async function checkPin() {
         });
 
 
-        const result = await response.json();
+       const savedPin = localStorage.getItem("customPin") || "0607";
+
+const result = {
+    ok: pin === savedPin
+};
 
 
         if (result.ok) {
@@ -188,3 +192,13 @@ musicButton.addEventListener("click", async () => {
     }
 
 });
+const savedTitle = localStorage.getItem("customTitle");
+const savedMessage = localStorage.getItem("customMessage");
+
+if (savedTitle) {
+    document.getElementById("customTitle").textContent = savedTitle;
+}
+
+if (savedMessage) {
+    document.getElementById("customMessage").textContent = savedMessage;
+}

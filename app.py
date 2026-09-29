@@ -10,6 +10,10 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/create")
+def create():
+    return render_template("create.html")
+    
 @app.post("/verify")
 def verify():
     data = request.get_json(silent=True) or {}
