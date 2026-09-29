@@ -3,7 +3,6 @@ const flowerScreen = document.getElementById("flowerScreen");
 const letterScreen = document.getElementById("letterScreen");
 
 const dots = document.querySelectorAll("#pinDots span");
-
 const error = document.getElementById("error");
 
 let pin = "";
@@ -32,7 +31,14 @@ async function checkPin() {
 
     try {
 
-        const response = await fetch("/verify", {
+        const slug = window.location.pathname.split("/")[2];
+
+        if (!slug) {
+            error.textContent = "Invalid letter link ❤️";
+            return;
+        }
+
+        const response = await fetch(`/api/verify/${slug}`, {
 
             method: "POST",
 
@@ -46,15 +52,18 @@ async function checkPin() {
 
         });
 
-
-       const savedPin = localStorage.getItem("customPin") || "0607";
-
-const result = {
-    ok: pin === savedPin
-};
+        const result = await response.json();
 
 
         if (result.ok) {
+
+            // Load custom letter content
+            document.getElementById("customTitle").textContent =
+                result.title;
+
+            document.getElementById("customMessage").textContent =
+                result.message;
+
 
             /* PIN screen hide */
 
@@ -93,6 +102,8 @@ const result = {
 
     } catch (errorObject) {
 
+        console.error(errorObject);
+
         error.textContent =
             "Something went wrong. Please try again.";
 
@@ -113,9 +124,7 @@ document
                 return;
             }
 
-
             pin += button.dataset.key;
-
 
             updateDots();
 
@@ -192,13 +201,3 @@ musicButton.addEventListener("click", async () => {
     }
 
 });
-const savedTitle = localStorage.getItem("customTitle");
-const savedMessage = localStorage.getItem("customMessage");
-
-if (savedTitle) {
-    document.getElementById("customTitle").textContent = savedTitle;
-}
-
-if (savedMessage) {
-    document.getElementById("customMessage").textContent = savedMessage;
-}

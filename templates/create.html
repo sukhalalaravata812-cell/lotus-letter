@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,6 +69,25 @@
         button:hover {
             opacity: 0.9;
         }
+
+        #linkBox {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff0f5;
+            border-radius: 12px;
+        }
+
+        #letterLink {
+            word-break: break-all;
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        #copyBtn {
+            background: #6f42c1;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -78,69 +98,186 @@
     <h1>💌 Create Your Letter</h1>
 
     <label>Set Your PIN</label>
+
     <input
         type="password"
         id="pin"
         maxlength="4"
-        placeholder="Enter 4 digit PIN">
+        inputmode="numeric"
+        placeholder="Enter 4 digit PIN"
+    >
 
     <label>Title</label>
+
     <input
         type="text"
         id="title"
-        placeholder="Example: For Someone Special ❤️">
+        placeholder="Example: For Someone Special ❤️"
+    >
 
     <label>Your Message</label>
+
     <textarea
         id="message"
-        placeholder="Write your message here..."></textarea>
+        placeholder="Write your message here..."
+    ></textarea>
 
-        <label>Choose Your Song 🎵</label>
-<input
-    type="file"
-    id="songFile"
-    accept="audio/*">
-    
+    <label>Choose Your Song 🎵</label>
+
+    <input
+        type="file"
+        id="songFile"
+        accept="audio/*"
+    >
+
     <button onclick="createLetter()">
         💖 Create My Letter
     </button>
 
+
+    <div id="linkBox">
+
+        <strong>🎉 Your unique letter link:</strong>
+
+        <p id="letterLink"></p>
+
+        <button id="copyBtn" onclick="copyLink()">
+            📋 Copy Link
+        </button>
+
+    </div>
+
 </div>
+
 
 <script>
 
-function createLetter() {
+let generatedLink = "";
 
-    const pin = document.getElementById("pin").value;
-    const title = document.getElementById("title").value;
-    const message = document.getElementById("message").value;
-    const songFile = document.getElementById("songFile").files[0];
 
-    if (pin.length !== 4) {
+async function createLetter() {
+
+    const pin =
+        document.getElementById("pin").value.trim();
+
+    const title =
+        document.getElementById("title").value.trim();
+
+    const message =
+        document.getElementById("message").value.trim();
+
+
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+
         alert("Please enter a 4 digit PIN.");
+
         return;
     }
+
 
     if (!title || !message) {
+
         alert("Please fill all fields.");
+
         return;
     }
 
-    localStorage.setItem("customPin", pin);
-    localStorage.setItem("customTitle", title);
-    localStorage.setItem("customMessage", message);
 
-    if (songFile) {
-        const reader = new FileReader();
+    try {
 
-        reader.onload = function () {
-            localStorage.setItem("customSong", reader.result);
-            window.location.href = "/";
-        };
+        const response = await fetch("/api/create", {
 
-        reader.readAsDataURL(songFile);
+            method: "POST",
 
-    } else {
-        window.location.href = "/";
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                pin: pin,
+
+                title: title,
+
+                message: message
+
+            })
+
+        });
+
+
+        const result = await response.json();
+
+
+        if (result.ok) {
+
+            generatedLink =
+                window.location.origin + result.url;
+
+
+            document.getElementById("letterLink").textContent =
+                generatedLink;
+
+
+            document.getElementById("linkBox").style.display =
+                "block";
+
+
+            alert("Your letter has been created! ❤️");
+            setTimeout(() => {
+    window.location.href = generatedLink;
+}, 1000);
+
+
+        } else {
+
+            alert(
+                result.error ||
+                "Something went wrong."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Server error. Please try again."
+        );
+
     }
+
 }
+
+
+function copyLink() {
+
+    if (!generatedLink) {
+        return;
+    }
+
+
+    navigator.clipboard.writeText(
+        generatedLink
+    )
+    .then(() => {
+
+        alert("Link copied! ❤️");
+
+    })
+    .catch(() => {
+
+        alert(
+            "Link copy nahi hua. Manually copy kar lo."
+        );
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>
