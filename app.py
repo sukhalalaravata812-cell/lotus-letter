@@ -321,6 +321,8 @@ def verify_pin(slug):
     entered_pin = str(
         data.get("pin", "")
     ).strip()
+    print("ENTERED PIN:", repr(entered_pin))
+print("DATABASE PIN:", repr(letter.pin))
 
     if entered_pin == letter.pin:
 
